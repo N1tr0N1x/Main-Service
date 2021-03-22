@@ -1,16 +1,30 @@
 package com.eler.MainService.Models;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-
-@EntityScan
 public class TeacherAccount {
 
-
-    private int id;
+    private int idTeacher;
 
     private String email;
 
-    private String password;
+    private String firstName;
+
+    private String lastName;
+
+    public TeacherAccount(int idTeacher, String email, String firstName, String lastName) {
+        this.idTeacher = idTeacher;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    
+    public TeacherAccount(int idTeacher) {
+        this.idTeacher = idTeacher;
+    }
+
+    public TeacherAccount() {
+    }
+
+    
 
     public String getEmail() {
         return email;
@@ -20,23 +34,28 @@ public class TeacherAccount {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public int getId() {
-        return id;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public TeacherAccount() {
+    public int getIdTeacher() {
+        return idTeacher;
+    }
+
+    public void setIdTeacher(int idTeacher) {
+        this.idTeacher = idTeacher;
     }
 
     
