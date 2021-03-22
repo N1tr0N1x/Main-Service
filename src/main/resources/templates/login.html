@@ -10,15 +10,15 @@
 </head>
 
 <body>
-    <form th:action="@{/main/login}" method="get">
-        <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>
+    <form th:action="@{/main/registration}" method="get">
+        <button class="btn btn-md btn-warning btn-block" type="Submit">Go To REGISTRATION Page</button>
     </form>
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <form autocomplete="off" action="#" th:action="@{/main/register}" th:object="${TeacherAccount}" method="post"
+                <form autocomplete="off" action="#" th:action="@{/main/login}" th:object="${TeacherAccount}" method="post"
                     class="form-horizontal" role="form">
-                    <h2>Registration Form</h2>
+                    <h2>LOGIN Form</h2>
 
                     <div class="form-group">
                         <div class="col-sm-9">
@@ -38,7 +38,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-9">
-                            <button type="submit" class="btn btn-primary btn-block">Register User</button>
+                            <button type="submit" class="btn btn-primary btn-block">LOGIN</button>
                         </div>
                     </div>
                 <span th:utext="${successMessage}"></span>
