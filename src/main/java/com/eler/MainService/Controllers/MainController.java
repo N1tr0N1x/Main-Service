@@ -2,6 +2,7 @@ package com.eler.MainService.Controllers;
 
 import com.eler.MainService.Models.TeacherAccount;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping("/main")
 public class MainController {
+
+    @Autowired
+    RestTemplate restTemplate;
 
     @GetMapping("/registration")
     public ModelAndView registration(){
@@ -40,14 +44,12 @@ public class MainController {
 
     @PostMapping("/register")
     public TeacherAccount register(@ModelAttribute("TeacherAccount") TeacherAccount teacher) {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject("http://localhost:8083/auth/register/"+teacher.getEmail()+"/"+teacher.getPassword(), TeacherAccount.class);
+        return restTemplate.getForObject("http://Authentication-Service/auth/register/"+teacher.getEmail()+"/"+teacher.getPassword(), TeacherAccount.class);
     }
 
     @PostMapping("/login")
     public TeacherAccount login(@ModelAttribute("TeacherAccount") TeacherAccount teacher) {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject("http://localhost:8083/auth/login/" + teacher.getEmail() + "/" + teacher.getPassword(),TeacherAccount.class);
+        return restTemplate.getForObject("http://Authentication-Service/auth/login/" + teacher.getEmail() + "/" + teacher.getPassword(),TeacherAccount.class);
     }
 
 }
