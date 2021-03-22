@@ -1,6 +1,8 @@
 package com.eler.MainService.Models;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+@EntityScan
 public class TeacherAccount {
 
 
@@ -32,6 +34,9 @@ public class TeacherAccount {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public TeacherAccount() {
     }
 
     
