@@ -63,6 +63,16 @@ public class MainController {
     public UserAccount login(@ModelAttribute("UserAccount") UserAccount user) {
         return restTemplate.getForObject("http://Authentication-Service/auth/login/" + user.getIdUser() + "/" + user.getPassword(),UserAccount.class);
     }
+    
+    @GetMapping("/new_module")
+    public ModelAndView new_module(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("Module",new Module());
+        modelAndView.setViewName("new_module");
+
+        return modelAndView;
+    }
+
      @PostMapping("/save")
     public String save(@ModelAttribute("Module") Module module) {
         RestTemplate restTemplate = new RestTemplate();
