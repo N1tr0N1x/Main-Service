@@ -15,11 +15,6 @@
                     <tr>
                         <th>module ID</th>
                         <th>Name</th>
-                        <th>Brand</th>
-                        <th>Made In</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                        <th>Name</th>
                         <th>Credit</th>
                         <th>Coefficient</th>
                         <th>Volume Horaire Cours</th>
@@ -43,9 +38,9 @@
                      <td th:text="${module.email_ens_td}">Email Enseignant TD</td>
                      <td th:text="${module.email_ens_tp}">Email Enseignant TP</td>
                      <td>
-                         <a th:href="@{'/edit/' + ${module.id}}">Edit</a>
+                        <a th:href="@{'/main/modedit/' + ${module.id}}">Edit</a>
                          &nbsp;&nbsp;&nbsp;
-                         <a th:href="@{'/delete/' + ${module.id}}">Delete</a>
+                         <a th:href="@{'/main/moddelete/' + ${module.id}}">Delete</a>
                      </td>
                  </tr>
              </tbody>
