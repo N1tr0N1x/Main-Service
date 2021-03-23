@@ -104,5 +104,46 @@ public class MainController {
         return modelAndView;
         
     }   
+    
+    
+    
+    @RequestMapping("/modedit/{id}")
+    public String ShowModule(@PathVariable(name = "id") int id){
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject("http://localhost:8085/mod/editpage/"+String.valueOf(id), String.class);
+    }
+    
+    
+    
+    
+    @PostMapping(value = "/modeditpage",headers = "Accept=application/json")
+    @ResponseBody
+    //public String viewHomePage(Model model, @RequestBody List<Module> modules) {
+    public ModelAndView viewModEdit(Model model,@RequestBody String json) {
+        ModelAndView modelAndView = new ModelAndView();
+        Module module = new Module();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        try{
+             module = objectMapper.readValue(json, new TypeReference<Module>(){});
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        modelAndView.setViewName("edit_module");
+        modelAndView.addObject("module", module);
+        return modelAndView;
+    }
+
+
+
+
+
+    @RequestMapping("/moddelete/{id}")
+    public String DeleteModule(@PathVariable(name = "id") int id){
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject("http://localhost:8085/mod/delete/"+String.valueOf(id), String.class);
+        
+    }
 
 }
