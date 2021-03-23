@@ -1,0 +1,55 @@
+    <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Module Manager</title>
+    </head>
+    <body>
+        <div align="center">
+            <h1>module List</h1>
+            <a href="new">Create New module</a>
+            <br/><br/>
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>module ID</th>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>Made In</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                        <th>Name</th>
+                        <th>Credit</th>
+                        <th>Coefficient</th>
+                        <th>Volume Horaire Cours</th>
+                        <th>Volume Horaire TD</th>
+                        <th>Volume Horaire TP</th>
+                        <th>Email Enseignant Cours</th>
+                        <th>Email Enseignant TD</th>
+                        <th>Email Enseignant TP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="module : ${listmodules}">
+                     <td th:text="${module.id}">Module ID</td>
+                     <td th:text="${module.name}">Name</td>
+                     <td th:text="${module.credit}">Credit</td>
+                     <td th:text="${module.coefficient}">Coefficient</td>
+                     <td th:text="${module.vh_cours}">Volume Horaire Cours</td>
+                     <td th:text="${module.vh_td}">Volume Horaire TD</td>
+                     <td th:text="${module.vh_tp}">Volume Horaire TP</td>
+                     <td th:text="${module.email_ens_cours}">Email Enseignant Cours</td>
+                     <td th:text="${module.email_ens_td}">Email Enseignant TD</td>
+                     <td th:text="${module.email_ens_tp}">Email Enseignant TP</td>
+                     <td>
+                         <a th:href="@{'/edit/' + ${module.id}}">Edit</a>
+                         &nbsp;&nbsp;&nbsp;
+                         <a th:href="@{'/delete/' + ${module.id}}">Delete</a>
+                     </td>
+                 </tr>
+             </tbody>
+         </table>
+     </div>    
+ </body>
+ </html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<title>Create New module</title>
+</head>
+<body>
+	<p>module</p>
+	<div align="center">
+		<h1>Create New module</h1>
+		<br />
+		<form action="#" th:action="@{/main/save}" th:object="${Module}"
+		method="post">
+
+		<table border="0" cellpadding="10">
+			<tr>
+				<td>module Name:</td>
+				<td><input type="text" th:field="*{name}" /></td>
+			</tr>
+			<tr><td> credit :</td>
+				<td><input type="text" th:field="*{credit}" /></td>
+			</tr>
+				<tr><td> coefficient :</td>
+					<td><input type="text" th:field="*{coefficient}" /></td>
+				</tr>
+					<tr><td> Volume Horaire Cours :</td>
+						<td><input type="text" th:field="*{vh_cours}" /></td>
+					</tr>
+						<tr><td> Volume Horaire TD :</td>
+							<td><input type="text" th:field="*{vh_td}" /></td>
+						</tr>
+							<tr><td> Volume Horaire TP :</td>
+								<td><input type="text" th:field="*{vh_tp}" /></td>
+							</tr>
+								<tr><td> Email Enseignant Cours :</td>
+									<td><input type="email" th:field="*{email_ens_cours}" /></td>
+								</tr>
+									<tr><td> Email Enseignant TD :</td>
+										<td><input type="email" th:field="*{email_ens_td}" /></td>
+									</tr>
+										<tr><td> Email Enseignant TP :</td>
+											<td><input type="email" th:field="*{email_ens_tp}" /></td>
+										</tr>
+											<tr>
+												<td colspan="2"><button type="submit">Save</button> </td>
+											</tr>
+										</table>
+									</form>
+								</div>
+							</body>
+							</html>
