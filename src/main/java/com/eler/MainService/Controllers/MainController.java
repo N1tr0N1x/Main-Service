@@ -75,6 +75,7 @@ public class MainController {
 
      @PostMapping("/save")
     public String save(@ModelAttribute("Module") Module module) {
+        module.setId(new Long(0));
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject("http://localhost:8085/mod/save/",module, String.class);
         
@@ -111,11 +112,8 @@ public class MainController {
     public String ShowModule(@PathVariable(name = "id") int id){
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject("http://localhost:8085/mod/editpage/"+String.valueOf(id), String.class);
+        
     }
-    
-    
-    
-    
     @PostMapping(value = "/modeditpage",headers = "Accept=application/json")
     @ResponseBody
     //public String viewHomePage(Model model, @RequestBody List<Module> modules) {
@@ -134,6 +132,12 @@ public class MainController {
         modelAndView.addObject("module", module);
         return modelAndView;
     }
+     @PostMapping("/editmod")
+    public String Modedit(@ModelAttribute("Module") Module module) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.postForObject("http://localhost:8085/mod/save/",module, String.class);
+        
+    }
 
 
 
@@ -143,6 +147,12 @@ public class MainController {
     public String DeleteModule(@PathVariable(name = "id") int id){
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject("http://localhost:8085/mod/delete/"+String.valueOf(id), String.class);
+        
+    }
+    @RequestMapping("/moduleIndex")
+    public String ShowModuleIndexPage(){
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject("http://localhost:8085/mod/ModuleIndex/", String.class);
         
     }
 
