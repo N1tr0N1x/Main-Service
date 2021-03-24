@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 public class Module {
 
    
-    private Long id;
+    private Long idModule;
 
     private String name;
 
@@ -36,13 +36,7 @@ public class Module {
 
 
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    
     public String getName() {
         return name;
     }
@@ -131,10 +125,10 @@ public class Module {
     public Module(){
     }
 
-    public Module(long id, String name, int credit, int coefficient, int vh_cours, int vh_td,
+    public Module(long idModule, String name, int credit, int coefficient, int vh_cours, int vh_td,
      int vh_tp , String email_ens_cours, String email_ens_td, String email_ens_tp){
         super();
-        this.id = id;
+        this.idModule = idModule;
         this.name = name;
         this.credit = credit;
         this.coefficient = coefficient;
@@ -159,5 +153,13 @@ public class Module {
         this.email_ens_tp = email_ens_tp;
     }
 */
+
+    public Long getIdModule() {
+        return idModule;
+    }
+
+    public void setIdModule(Long idModule) {
+        this.idModule = idModule;
+    }
     
 }

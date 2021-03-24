@@ -9,14 +9,14 @@
 	<div align="center">
 		<h1>Edit module</h1>
 		<br />
-		<form action="#" th:action="@{/save}" th:object="${module}"
+		<form action="#" th:action="@{/main/save}" th:object="${module}"
 			method="post">
 
 			<table border="0" cellpadding="10">
 				<tr>				
 					<td>module ID:</td>
 					<td>
-						<input type="text" th:field="*{id}" readonly="readonly" />
+						<input type="text" th:field="*{idModule}" readonly="readonly" />
 					</td>
 				</tr>			
 				<tr>				

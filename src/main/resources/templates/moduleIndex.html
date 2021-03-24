@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="module : ${listmodules}">
-                     <td th:text="${module.id}">Module ID</td>
+                     <td th:text="${module.idModule}">Module ID</td>
                      <td th:text="${module.name}">Name</td>
                      <td th:text="${module.credit}">Credit</td>
                      <td th:text="${module.coefficient}">Coefficient</td>
@@ -38,9 +38,9 @@
                      <td th:text="${module.email_ens_td}">Email Enseignant TD</td>
                      <td th:text="${module.email_ens_tp}">Email Enseignant TP</td>
                      <td>
-                        <a th:href="@{'/main/modedit/' + ${module.id}}">Edit</a>
+                        <a th:href="@{'/main/modedit/' + ${module.idModule}}">Edit</a>
                          &nbsp;&nbsp;&nbsp;
-                         <a th:href="@{'/main/moddelete/' + ${module.id}}">Delete</a>
+                         <a th:href="@{'/main/moddelete/' + ${module.idModule}}">Delete</a>
                      </td>
                  </tr>
              </tbody>
