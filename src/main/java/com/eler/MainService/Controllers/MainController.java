@@ -32,13 +32,13 @@ public class MainController {
     @Autowired
     RestTemplate restTemplate;
 
-    @GetMapping("/registration")
+    /*@GetMapping("/registration")
     public ModelAndView registration(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("UserAccount",new UserAccount());
         modelAndView.setViewName("registration");
         return modelAndView;
-    }
+    }*/
     
     @GetMapping("/login")
     public ModelAndView login() {
@@ -171,6 +171,7 @@ public class MainController {
     public ModelAndView DeleteTeacher(@PathVariable(name = "id") int idTeacher) {
 
         restTemplate.getForObject("http://Teacher-Service/teacher/delete/" + idTeacher, String.class);
+        restTemplate.getForObject("http://Authentication-Service/auth/delete/" + idTeacher, String.class);
 
         return new ModelAndView("redirect:http://localhost:8082/main/teachers");
     }
