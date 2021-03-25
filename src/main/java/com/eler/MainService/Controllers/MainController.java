@@ -285,5 +285,27 @@ public class MainController {
         modelAndView.addObject("teacher", teacher);
         return modelAndView;
     }
+    @GetMapping("/new_file/{email}/{Id}")
+    public ModelAndView saveFileForm(@PathVariable(name = "email") String email, @PathVariable(name = "id") int id) {
+        
+        File file = new file();
+        file.setModuleID(new Long(id));
+        file.setTeacherEmail(email);
+        //TeacherAccount teacher = restTemplate.getForObject("http://Teacher-Service/teacher/getTeacher/" + id, TeacherAccount.class);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("new_file");
+        modelAndView.addObject("File", file);
+        return modelAndView;
+    }
+    @PostMapping("/save_file")
+    public ModelAndView DeleteTeacher(@RequestParam("data") MultipartFile data,@ModelAttribute("file") File file) {
+
+        String link = restTemplate.postForObject("http://File-Storage-Service/store/storefile/" + data, String.class);
+        file.setLink(link);
+
+        restTemplate.postForObject("http://Course-Service/file/save/" + file, String.class);
+
+        return new ModelAndView("redirect:http://localhost:8082/main");
+    }
 
 }
