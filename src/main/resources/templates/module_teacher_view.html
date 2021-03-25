@@ -12,7 +12,7 @@
             <button class="btn btn-md btn-warning btn-block" type="Submit">MY MODULES</button>
         </form>
 
-        <form th:action="@{'/main/teacher_profile/' + ${teacher.idTeacher}}" method="get">
+        <form th:action="@{'/main/new_file/' + ${teacher.email}+'/'+${module.Id}'}" method="get">
             <button class="btn btn-md btn-warning btn-block" type="Submit">ADD NEW FILE</button>
         </form>
 
