@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<title>Create New module</title>
+</head>
+<body>
+	<p>module</p>
+	<div align="center">
+		<h1>Add new file</h1>
+		<br />
+		<form method="POST" enctype="multipart/form-data" th:action="@{/main/save_file}" th:object="${File}">
+
+		<table border="0" cellpadding="10">
+			<tr>
+				<td>File title :</td>
+				<td><input type="text" th:field="*{title}" /></td>
+			</tr>
+			<tr><td> description :</td>
+				<td><input type="text" th:field="*{description}" /></td>
+			</tr>
+					
+										
+				<tr><td>File to upload:</td><td><input type="file" name="data" /></td></tr>
+										</tr>
+											<tr>
+												<td colspan="2"><button type="submit">Save</button> </td>
+											</tr>
+										</table>
+										<form th:action="@{/main/}" method="get">
+											<button class="btn btn-md btn-warning btn-block" type="Submit">Cancel</button>
+										</form>
+						</form>
+			</div>
+</body>
+</html>
