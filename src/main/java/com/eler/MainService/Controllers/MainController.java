@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +37,6 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("UserAccount",new UserAccount());
         modelAndView.setViewName("registration");
-
         return modelAndView;
     }
     
@@ -67,6 +67,8 @@ public class MainController {
         return restTemplate.getForObject("http://Authentication-Service/auth/login/" + user.getIdUser() + "/" + user.getPassword(),UserAccount.class);
     }
     
+    /////////////////////////////////////////////////////////////////////////////////////
+
     @GetMapping("/new_module")
     public ModelAndView new_module(){
         ModelAndView modelAndView = new ModelAndView();
@@ -76,8 +78,7 @@ public class MainController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    //@PostMapping("/save")
+    @PostMapping("/save")
     public ModelAndView save(@ModelAttribute("Module") Module module) {
         restTemplate.postForObject("http://Course-Service/mod/save",module, String.class);
 
@@ -101,8 +102,7 @@ public class MainController {
         return new ModelAndView("redirect:http://localhost:8082/main/modules");
     }
     
-    @RequestMapping(value = "/modules", method = RequestMethod.GET)
-    //@GetMapping("/moduleIndex")
+    @GetMapping("/modules")
     public ModelAndView ShowModuleIndexPage(){
         String data = restTemplate.getForObject("http://Course-Service/mod/modules", String.class);
 
@@ -121,6 +121,66 @@ public class MainController {
         // List<Module> mod = modules;
         modelAndView.setViewName("moduleIndex");
         modelAndView.addObject("listmodules", mod);
+        return modelAndView;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    
+    @GetMapping("/new_teacher")
+    public ModelAndView newTeacherView() { 
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("new_teacher");
+        modelAndView.addObject("teacher", new TeacherAccount());
+        return modelAndView; 
+    }
+
+    @PostMapping("/save_teacher")
+    public ModelAndView SaveTeacher(@ModelAttribute("teacher") TeacherAccount teacher) {
+        UserAccount user = restTemplate.postForObject("http://Authentication-Service/auth/register",
+                new UserAccount(teacher.getIdTeacher(), teacher.getEmail(), "0000"), UserAccount.class);
+        teacher.setIdTeacher(user.getIdUser());
+        restTemplate.postForObject("http://Teacher-Service/teacher/saveTeacher",teacher,String.class);
+
+        return new ModelAndView("redirect:http://localhost:8082/main/teachers");
+    }
+    
+    @GetMapping("/teachers")
+    public ModelAndView ShowAllTeachers() {
+        String data = restTemplate.getForObject("http://Teacher-Service/teacher/teachers", String.class);
+
+        ModelAndView modelAndView = new ModelAndView();
+        final ObjectMapper objectMapper = new ObjectMapper();
+
+        List<TeacherAccount> teachers = new ArrayList<TeacherAccount>();
+        try {
+            teachers = objectMapper.readValue(data, new TypeReference<List<TeacherAccount>>() {
+            });
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        modelAndView.setViewName("list_teachers");
+        modelAndView.addObject("listTeachers", teachers);
+        return modelAndView;
+    }
+
+    @RequestMapping("/deleteTeacher/{id}")
+    public ModelAndView DeleteTeacher(@PathVariable(name = "id") int idTeacher) {
+
+        restTemplate.getForObject("http://Teacher-Service/teacher/delete/" + idTeacher, String.class);
+
+        return new ModelAndView("redirect:http://localhost:8082/main/teachers");
+    }
+
+    @RequestMapping("/editTeacher/{id}")
+    public ModelAndView viewEditTeacher(@PathVariable(name = "id") int id) {
+        TeacherAccount teacher = restTemplate.getForObject("http://Teacher-Service/teacher/getTeacher/" + id, TeacherAccount.class);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("edit_teacher");
+        modelAndView.addObject("teacher", teacher);
         return modelAndView;
     }
 
