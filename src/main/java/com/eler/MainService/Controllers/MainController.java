@@ -70,6 +70,20 @@ public class MainController {
         return modelAndView;
     }
 
+    @RequestMapping("/showModuleTeacher/{id}")
+    public ModelAndView showModuleTeacher(@PathVariable(name = "id") int id) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("module_teacher_view");
+
+        Module module = restTemplate.getForObject("http://Course-Service/mod/getModule/" + id, Module.class);
+        modelAndView.addObject("module", module);
+
+        TeacherAccount teacher = restTemplate.getForObject("http://Teacher-Service/teacher/getTeacher/" + id,TeacherAccount.class);
+        modelAndView.addObject("teacher", teacher);
+
+        return modelAndView;
+    }
+
     @GetMapping("/teacher_profile/{idTeacher}")
     public ModelAndView showTeacherProfile(@PathVariable(name = "idTeacher") int idTeacher){
         ModelAndView modelAndView = new ModelAndView();
