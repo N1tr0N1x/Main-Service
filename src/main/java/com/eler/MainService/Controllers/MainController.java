@@ -32,6 +32,9 @@ public class MainController {
     @Autowired
     RestTemplate restTemplate;
 
+    boolean loggedIn = false;
+    boolean isAdminLoggedIn = false;
+
     /*@GetMapping("/register")
     public ModelAndView register() {
         ModelAndView modelAndView = new ModelAndView();
@@ -72,6 +75,11 @@ public class MainController {
 
     @RequestMapping("/showModuleTeacher/{id}")
     public ModelAndView showModuleTeacher(@PathVariable(name = "id") int id) {
+
+        if (!loggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("module_teacher_view");
 
@@ -86,6 +94,9 @@ public class MainController {
 
     @GetMapping("/teacher_profile/{idTeacher}")
     public ModelAndView showTeacherProfile(@PathVariable(name = "idTeacher") int idTeacher){
+        if(!loggedIn){
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("teacher_view");
 
@@ -150,18 +161,32 @@ public class MainController {
     @PostMapping("/login")
     public ModelAndView login(@ModelAttribute("UserAccount") UserAccount user) {
         user = restTemplate.postForObject("http://Authentication-Service/auth/login", user,UserAccount.class);
-
+        if(user!=null){
+            loggedIn = true;
+        }else{
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         if(user.getIdUser()==0){
             //ADMIN
+            isAdminLoggedIn = true;
             return new ModelAndView("redirect:http://localhost:8082/main/admin_home/");
         }else{
             return new ModelAndView("redirect:http://localhost:8082/main/teacher_profile/" + user.getIdUser());
         }
         
     }
-
+    
+    @GetMapping("/logout")
+    public ModelAndView logout() {
+        loggedIn = false;
+        isAdminLoggedIn = false;
+        return new ModelAndView("redirect:http://localhost:8082/main/login");
+    }
     @GetMapping("/admin_home")
     public ModelAndView adminHome() {
+        if (!isAdminLoggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("admin_dashboard");
         return modelAndView;
@@ -172,6 +197,9 @@ public class MainController {
 
     @GetMapping("/new_module")
     public ModelAndView new_module(){
+        if (!isAdminLoggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("Module",new Module());
         modelAndView.setViewName("new_module");
@@ -181,6 +209,9 @@ public class MainController {
 
     @PostMapping("/save")
     public ModelAndView save(@ModelAttribute("Module") Module module) {
+        if (!isAdminLoggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         restTemplate.postForObject("http://Course-Service/mod/save",module, String.class);
 
         return new ModelAndView("redirect:http://localhost:8082/main/modules");
@@ -188,6 +219,9 @@ public class MainController {
     
     @RequestMapping("/modedit/{id}")
     public ModelAndView viewModEdit(@PathVariable(name = "id") int id){
+        if (!isAdminLoggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         Module module = restTemplate.getForObject("http://Course-Service/mod/getModule/"+id, Module.class);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("edit_module");
@@ -197,6 +231,10 @@ public class MainController {
 
     @RequestMapping("/moddelete/{id}")
     public ModelAndView DeleteModule(@PathVariable(name = "id") int id){
+
+        if (!isAdminLoggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
 
         restTemplate.getForObject("http://Course-Service/mod/delete/"+id, String.class);
 
@@ -230,6 +268,9 @@ public class MainController {
     
     @GetMapping("/new_teacher")
     public ModelAndView newTeacherView() { 
+        if (!isAdminLoggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("new_teacher");
         modelAndView.addObject("teacher", new TeacherAccount());
@@ -238,6 +279,9 @@ public class MainController {
 
     @PostMapping("/save_teacher")
     public ModelAndView SaveTeacher(@ModelAttribute("teacher") TeacherAccount teacher) {
+        if (!isAdminLoggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         UserAccount user = restTemplate.postForObject("http://Authentication-Service/auth/register",
                 new UserAccount(teacher.getIdTeacher(), teacher.getEmail(), "0000"), UserAccount.class);
         teacher.setIdTeacher(user.getIdUser());
@@ -248,6 +292,9 @@ public class MainController {
     
     @GetMapping("/teachers")
     public ModelAndView ShowAllTeachers() {
+        if (!isAdminLoggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         String data = restTemplate.getForObject("http://Teacher-Service/teacher/teachers", String.class);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -270,7 +317,9 @@ public class MainController {
 
     @RequestMapping("/deleteTeacher/{id}")
     public ModelAndView DeleteTeacher(@PathVariable(name = "id") int idTeacher) {
-
+        if (!isAdminLoggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         restTemplate.getForObject("http://Teacher-Service/teacher/delete/" + idTeacher, String.class);
         restTemplate.getForObject("http://Authentication-Service/auth/delete/" + idTeacher, String.class);
 
@@ -279,6 +328,9 @@ public class MainController {
 
     @RequestMapping("/editTeacher/{id}")
     public ModelAndView viewEditTeacher(@PathVariable(name = "id") int id) {
+        if (!isAdminLoggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
         TeacherAccount teacher = restTemplate.getForObject("http://Teacher-Service/teacher/getTeacher/" + id, TeacherAccount.class);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("edit_teacher");

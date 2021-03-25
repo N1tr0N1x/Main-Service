@@ -8,6 +8,9 @@
 
 <body>
     <div align="center">
+        <form th:action="@{/main/logout}" method="get">
+            <button class="btn btn-md btn-warning btn-block" type="Submit">LOGOUT</button>
+        </form>
         <form th:action="@{/main/teachers}" method="get">
             <button class="btn btn-md btn-warning btn-block" type="Submit">LIST TEACHERS</button>
         </form>
