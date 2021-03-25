@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Edit module</title>
+</head>
+
+<body>
+    <div align="center">
+        <form th:action="@{/main/home}" method="get">
+            <button class="btn btn-md btn-warning btn-block" type="Submit">HOME</button>
+        </form>
+
+        <h1>
+            <th:block th:utext="${module.name}" />
+        </h1>
+
+        <ul>
+            <li>
+                <p>credit: </p>
+                <th:block th:utext="${module.credit}" />
+            </li>
+            <li>
+                <p>coefficient: </p>
+                <th:block th:utext="${module.coefficient}" />
+            </li>
+            <li>
+                <p>vh_cours: </p>
+                <th:block th:utext="${module.vhCours}" />
+            </li>
+            <li>
+                <p>vh_td: </p>
+                <th:block th:utext="${module.vhTd}" />
+            </li>
+            <li>
+                <p>email_ens_cours: </p>
+                <th:block th:utext="${module.emailEnsCours}" />
+            </li>
+            <li>
+                <p>email_ens_td: </p>
+                <th:block th:utext="${module.emailEnsTd}" />
+            </li>
+            <li>
+                <p>email_ens_tp: </p>
+                <th:block th:utext="${module.emailEnsTp}" />
+            </li>
+            </li>
+
+        </ul>
+
+        <h2>module courses</h2>
+       
+    </div>
+</body>
+
+</html>

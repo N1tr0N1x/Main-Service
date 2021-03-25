@@ -11,31 +11,22 @@ public class Module {
     private Long idModule;
 
     private String name;
-
  
     private int credit;
 
-
     private int coefficient;
 
+    private int vhCours;
 
-    private int vh_cours;
+    private int vhTd;
 
-    private int vh_td;
+    private int vhTp;
 
+    private String emailEnsCours;
 
-    private int vh_tp;
+    private String emailEnsTd;
 
-   
-    private String email_ens_cours;
-
-    
-    private String email_ens_tp;
-
-    private String email_ens_td;
-
-
-
+    private String emailEnsTp;
     
     public String getName() {
         return name;
@@ -60,99 +51,11 @@ public class Module {
         this.coefficient = coefficient;
 
 
-    }public int getVh_cours() {
-        return vh_cours;
     }
-
-    public void setVh_cours(int vh_cours) {
-        this.vh_cours = vh_cours;
-
-
-
-    }public int getVh_td() {
-        return vh_td;
-    }
-
-    public void setVh_td(int vh_td) {
-        this.vh_td = vh_td;
-
-
-    }public int getVh_tp() {
-        return vh_tp;
-    }
-
-    public void setVh_tp(int vh_tp) {
-        this.vh_tp = vh_tp;
-    }
-
-    public String getEmail_ens_cours() {
-        return email_ens_cours;
-    }
-
-    public void setEmail_ens_cours(String email_ens_cours) {
-        this.email_ens_cours = email_ens_cours;
-    }
-
-    public String getEmail_ens_td() {
-        return email_ens_td;
-    }
-
-    public void setEmail_ens_td(String email_ens_td) {
-        this.email_ens_td = email_ens_td;
-    }
-    public String getEmail_ens_tp() {
-        return email_ens_tp;
-    }
-
-    public void setEmail_ens_tp(String email_ens_tp) {
-        this.email_ens_tp = email_ens_tp;
-    }
-
-
-   /* public Module(String name, int credit, int coefficient, int vh_cours, int vh_td,
-     int vh_tp , String email_ens_cours, String email_ens_td, String email_ens_tp) {
-        this.name = name;
-        this.credit = credit;
-        this.coefficient = coefficient;
-        this.vh_cours = vh_cours;
-        this.vh_td = vh_td;
-        this.vh_tp = vh_tp;
-        this.email_ens_cours = email_ens_cours;
-        this.email_ens_td = email_ens_td;
-        this.email_ens_tp = email_ens_tp;
-    }*/
+    
 
     public Module(){
     }
-
-    public Module(long idModule, String name, int credit, int coefficient, int vh_cours, int vh_td,
-     int vh_tp , String email_ens_cours, String email_ens_td, String email_ens_tp){
-        super();
-        this.idModule = idModule;
-        this.name = name;
-        this.credit = credit;
-        this.coefficient = coefficient;
-        this.vh_cours = vh_cours;
-        this.vh_td = vh_td;
-        this.vh_tp = vh_tp;
-        this.email_ens_cours = email_ens_cours;
-        this.email_ens_td = email_ens_td;
-        this.email_ens_tp = email_ens_tp;
-    }
-   /* public Module(int id, String name, int credit, int coefficient, int vh_cours, int vh_td,
-     int vh_tp , String email_ens_cours, String email_ens_td, String email_ens_tp){
-        this.id = id;
-        this.name = name;
-        this.credit = credit;
-        this.coefficient = coefficient;
-        this.vh_cours = vh_cours;
-        this.vh_td = vh_td;
-        this.vh_tp = vh_tp;
-        this.email_ens_cours = email_ens_cours;
-        this.email_ens_td = email_ens_td;
-        this.email_ens_tp = email_ens_tp;
-    }
-*/
 
     public Long getIdModule() {
         return idModule;
@@ -160,6 +63,68 @@ public class Module {
 
     public void setIdModule(Long idModule) {
         this.idModule = idModule;
+    }
+
+    public int getVhCours() {
+        return vhCours;
+    }
+
+    public void setVhCours(int vhCours) {
+        this.vhCours = vhCours;
+    }
+
+    public int getVhTd() {
+        return vhTd;
+    }
+
+    public void setVhTd(int vhTd) {
+        this.vhTd = vhTd;
+    }
+
+    public int getVhTp() {
+        return vhTp;
+    }
+
+    public void setVhTp(int vhTp) {
+        this.vhTp = vhTp;
+    }
+
+    public String getEmailEnsCours() {
+        return emailEnsCours;
+    }
+
+    public void setEmailEnsCours(String emailEnsCours) {
+        this.emailEnsCours = emailEnsCours;
+    }
+
+    public String getEmailEnsTd() {
+        return emailEnsTd;
+    }
+
+    public void setEmailEnsTd(String emailEnsTd) {
+        this.emailEnsTd = emailEnsTd;
+    }
+
+    public String getEmailEnsTp() {
+        return emailEnsTp;
+    }
+
+    public void setEmailEnsTp(String emailEnsTp) {
+        this.emailEnsTp = emailEnsTp;
+    }
+
+    public Module(Long idModule, String name, int credit, int coefficient, int vhCours, int vhTd, int vhTp,
+            String emailEnsCours, String emailEnsTd, String emailEnsTp) {
+        this.idModule = idModule;
+        this.name = name;
+        this.credit = credit;
+        this.coefficient = coefficient;
+        this.vhCours = vhCours;
+        this.vhTd = vhTd;
+        this.vhTp = vhTp;
+        this.emailEnsCours = emailEnsCours;
+        this.emailEnsTd = emailEnsTd;
+        this.emailEnsTp = emailEnsTp;
     }
     
 }

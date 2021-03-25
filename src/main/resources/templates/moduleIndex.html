@@ -31,12 +31,12 @@
                      <td th:text="${module.name}">Name</td>
                      <td th:text="${module.credit}">Credit</td>
                      <td th:text="${module.coefficient}">Coefficient</td>
-                     <td th:text="${module.vh_cours}">Volume Horaire Cours</td>
-                     <td th:text="${module.vh_td}">Volume Horaire TD</td>
-                     <td th:text="${module.vh_tp}">Volume Horaire TP</td>
-                     <td th:text="${module.email_ens_cours}">Email Enseignant Cours</td>
-                     <td th:text="${module.email_ens_td}">Email Enseignant TD</td>
-                     <td th:text="${module.email_ens_tp}">Email Enseignant TP</td>
+                     <td th:text="${module.vhCours}">Volume Horaire Cours</td>
+                     <td th:text="${module.vhTd}">Volume Horaire TD</td>
+                     <td th:text="${module.vhTp}">Volume Horaire TP</td>
+                     <td th:text="${module.emailEnsCours}">Email Enseignant Cours</td>
+                     <td th:text="${module.emailEnsTd}">Email Enseignant TD</td>
+                     <td th:text="${module.emailEnsTp}">Email Enseignant TP</td>
                      <td>
                         <a th:href="@{'/main/modedit/' + ${module.idModule}}">Edit</a>
                          &nbsp;&nbsp;&nbsp;

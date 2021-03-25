@@ -32,14 +32,100 @@ public class MainController {
     @Autowired
     RestTemplate restTemplate;
 
-    /*@GetMapping("/registration")
-    public ModelAndView registration(){
+    /*@GetMapping("/register")
+    public ModelAndView register() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("UserAccount",new UserAccount());
-        modelAndView.setViewName("registration");
+        modelAndView.setViewName("testView");
         return modelAndView;
     }*/
-    
+
+    @GetMapping("/home")
+    public ModelAndView home(){
+        String data = restTemplate.getForObject("http://Course-Service/mod/modules", String.class);
+
+        ModelAndView modelAndView = new ModelAndView();
+        final ObjectMapper objectMapper = new ObjectMapper();
+
+        List<Module> modules = new ArrayList<Module>();
+        try {
+            modules = objectMapper.readValue(data, new TypeReference<List<Module>>() {
+            });
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // List<Module> mod = modules;
+        modelAndView.setViewName("list_module_check");
+        modelAndView.addObject("modules", modules);
+        return modelAndView;
+    }
+
+    @RequestMapping("/showModule/{id}")
+    public ModelAndView showModule(@PathVariable(name = "id") int id) {
+        Module module = restTemplate.getForObject("http://Course-Service/mod/getModule/" + id, Module.class);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("module_view");
+        modelAndView.addObject("module", module);
+        return modelAndView;
+    }
+
+    @GetMapping("/teacher_profile/{idTeacher}")
+    public ModelAndView showTeacherProfile(@PathVariable(name = "idTeacher") int idTeacher){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("teacher_view");
+
+
+        TeacherAccount teacher = restTemplate.getForObject("http://Teacher-Service/teacher/getTeacher/" + idTeacher,TeacherAccount.class);
+        modelAndView.addObject("teacher", teacher);
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+
+        String dataCours = restTemplate.getForObject("http://Course-Service/mod/modules/"+teacher.getEmail()+"/cours", String.class);
+        List<Module> modulesCours = new ArrayList<Module>();
+        try {
+            modulesCours = objectMapper.readValue(dataCours, new TypeReference<List<Module>>() {
+            });
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        modelAndView.addObject("modulesCours", modulesCours);
+
+
+        String dataTd = restTemplate.getForObject("http://Course-Service/mod/modules/" + teacher.getEmail() + "/td",
+                String.class);
+        List<Module> modulesTd = new ArrayList<Module>();
+        try {
+            modulesTd = objectMapper.readValue(dataTd, new TypeReference<List<Module>>() {
+            });
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        modelAndView.addObject("modulesTd", modulesTd);
+
+
+
+        String dataTp = restTemplate.getForObject("http://Course-Service/mod/modules/" + teacher.getEmail() + "/tp",
+                String.class);
+        List<Module> modulesTp = new ArrayList<Module>();
+        try {
+            modulesTp = objectMapper.readValue(dataTp, new TypeReference<List<Module>>() {
+            });
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        modelAndView.addObject("modulesTp", modulesTp);
+
+        return modelAndView;
+    }
+
+    //////////////////////////////////////////////////////////////////
     @GetMapping("/login")
     public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
@@ -48,24 +134,14 @@ public class MainController {
 
         return modelAndView;
     }
-    
-    /*@GetMapping("/register")
-    public ModelAndView register() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("testView");
-        return modelAndView;
-    }*/
-
-    @PostMapping("/register")
-    public void register(@ModelAttribute("UserAccount") UserAccount user) {
-        user = restTemplate.getForObject("http://Authentication-Service/auth/register/"+user.getEmail()+"/"+user.getPassword(), UserAccount.class);
-        restTemplate.postForObject("http://Teacher-Service/teacher/saveTeacher/",new TeacherAccount(user.getIdUser(),user.getEmail(),null,null), TeacherAccount.class);
-    }
-
     @PostMapping("/login")
-    public UserAccount login(@ModelAttribute("UserAccount") UserAccount user) {
-        return restTemplate.getForObject("http://Authentication-Service/auth/login/" + user.getIdUser() + "/" + user.getPassword(),UserAccount.class);
+    public ModelAndView login(@ModelAttribute("UserAccount") UserAccount user) {
+        user = restTemplate.postForObject("http://Authentication-Service/auth/login", user,UserAccount.class);
+
+        return new ModelAndView("redirect:http://localhost:8082/main/teacher_profile/"+user.getIdUser());
     }
+
+
     
     /////////////////////////////////////////////////////////////////////////////////////
 
