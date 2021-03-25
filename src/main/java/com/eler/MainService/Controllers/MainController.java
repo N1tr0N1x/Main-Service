@@ -145,16 +145,27 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("UserAccount", new UserAccount());
         modelAndView.setViewName("login");
-
         return modelAndView;
     }
     @PostMapping("/login")
     public ModelAndView login(@ModelAttribute("UserAccount") UserAccount user) {
         user = restTemplate.postForObject("http://Authentication-Service/auth/login", user,UserAccount.class);
 
-        return new ModelAndView("redirect:http://localhost:8082/main/teacher_profile/"+user.getIdUser());
+        if(user.getIdUser()==0){
+            //ADMIN
+            return new ModelAndView("redirect:http://localhost:8082/main/admin_home/");
+        }else{
+            return new ModelAndView("redirect:http://localhost:8082/main/teacher_profile/" + user.getIdUser());
+        }
+        
     }
 
+    @GetMapping("/admin_home")
+    public ModelAndView adminHome() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin_dashboard");
+        return modelAndView;
+    }
 
     
     /////////////////////////////////////////////////////////////////////////////////////
