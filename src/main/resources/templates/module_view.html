@@ -49,7 +49,24 @@
 
         </ul>
 
-        <h2>module courses</h2>
+        <h2>module courses :</h2>
+        <div>
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>File</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="file : ${files}">
+                        <td th:text="${file.title}">FILE</td>
+                        <td>
+                            <a th:href="@{'/main/file/' + ${file.link}}">DOWNLOAD</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
        
     </div>
 </body>

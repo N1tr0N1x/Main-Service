@@ -88,6 +88,22 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("module_view");
         modelAndView.addObject("module", module);
+
+        String filesData = restTemplate.getForObject("http://Course-Service/mod/get_files_by_module_id/" + module.getIdModule(), String.class);
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+
+        List<MyFile> files = new ArrayList<MyFile>();
+        try {
+            files = objectMapper.readValue(filesData, new TypeReference<List<MyFile>>() {
+            });
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        modelAndView.addObject("files", files);
+
         return modelAndView;
     }
 
