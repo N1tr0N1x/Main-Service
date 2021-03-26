@@ -214,6 +214,24 @@ public class MainController {
         return modelAndView;
     }
 
+    @GetMapping("/edit_teacher_password/{idTeacher}")
+    public ModelAndView editTeacherPassword() {
+        if (!loggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("teacher_password");
+        UserAccount user = restTemplate.getForObject("http://Authentication-Service/auth/getUserById/"+idUser, UserAccount.class);
+        modelAndView.addObject("user", user);
+        return modelAndView;
+    }
+
+    @PostMapping("/save_user")
+    public ModelAndView NewUserPassword(@ModelAttribute("user") UserAccount user){
+        restTemplate.postForObject("http://Authentication-Service/auth/register",user, UserAccount.class);
+        return new ModelAndView("redirect:http://localhost:8082/main/teacher_profile/" + user.getIdUser());
+    }
+
     //////////////////////////////////////////////////////////////////
     @GetMapping("/login")
     public ModelAndView login() {
