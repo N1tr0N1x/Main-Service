@@ -4,15 +4,20 @@
 <head>
 <meta charset="utf-8" />
 <title>Edit module</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 </head>
 <body>
+	<div class="shadow-lg p-3 mb-5 bg-white rounded">
 	<div align="center">
 		<h1>Edit module</h1>
 		<br />
 		<form action="#" th:action="@{/main/save}" th:object="${module}"
 			method="post">
 
-			<table border="0" cellpadding="10">
+			<table border="0" cellpadding="10" class= "table table-hover table-dark">
 				<tr style="display:none;">				
 					<td>module ID:</td>
 					<td>
@@ -22,49 +27,50 @@
 				<tr>				
 					<td>module Name:</td>
 					<td>
-						<input type="text" th:field="*{name}" />
+						<input class="form-control" type="text" th:field="*{name}" />
 					</td>
 				</tr>
 				<tr>
 					<td>credit:</td>
-					<td><input type="text" th:field="*{credit}" /></td>
+					<td><input class="form-control" type="text" th:field="*{credit}" /></td>
 				</tr>
 				<tr>
 					<td>coefficient:</td>
-					<td><input type="text" th:field="*{coefficient}" /></td>
+					<td><input class="form-control" type="text" th:field="*{coefficient}" /></td>
 				</tr>
 				<tr>
 					<td>Volume Horaire Cours:</td>
-					<td><input type="text" th:field="*{vhCours}" /></td>
+					<td><input class="form-control" type="text" th:field="*{vhCours}" /></td>
 				</tr>
 				<tr>
 					<td>Volume Horaire TD:</td>
-					<td><input type="text" th:field="*{vhTd}" /></td>
+					<td><input class="form-control" type="text" th:field="*{vhTd}" /></td>
 				</tr>
 				<tr>
 					<td>Volume Horaire TP:</td>
-					<td><input type="text" th:field="*{vhTp}" /></td>
+					<td><input  class="form-control"type="text" th:field="*{vhTp}" /></td>
 				</tr>
 				<tr>
 					<td>Email Enseignant Cours:</td>
-					<td><input type="text" th:field="*{emailEnsCours}" /></td>
+					<td><input class="form-control" type="text" th:field="*{emailEnsCours}" /></td>
 				</tr>
 				<tr>
 					<td>Email Enseignant TD:</td>
-					<td><input type="text" th:field="*{emailEnsTd}" /></td>
+					<td><input class="form-control" type="text" th:field="*{emailEnsTd}" /></td>
 				</tr>
 				<tr>
 					<td>Email Enseignant TP:</td>
-					<td><input type="text" th:field="*{emailEnsTp}" /></td>
+					<td><input class="form-control" type="text" th:field="*{emailEnsTp}" /></td>
 				</tr>								
 				<tr>
-					<td colspan="2"><button type="submit">Save</button> </td>
+					<td colspan="2"><button type="submit" "btn btn-primary">Save</button> </td>
 				</tr>
 			</table>
 		</form>
 		<form th:action="@{/main/modules}" method="get">
-			<button class="btn btn-md btn-warning btn-block" type="Submit">Cancel</button>
+			<button class="btn btn-danger" type="Submit">Cancel</button>
 		</form>
+	</div>
 	</div>
 </body>
 </html>
