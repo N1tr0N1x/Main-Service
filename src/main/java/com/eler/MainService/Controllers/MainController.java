@@ -1,12 +1,18 @@
 package com.eler.MainService.Controllers;
 
+import org.springframework.core.io.Resource;
 import com.eler.MainService.Models.TeacherAccount;
 import com.eler.MainService.Models.UserAccount;
+import com.eler.MainService.Models.MyFile;
 import com.eler.MainService.Models.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.*;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -14,15 +20,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
@@ -34,6 +51,7 @@ public class MainController {
 
     boolean loggedIn = false;
     boolean isAdminLoggedIn = false;
+    int idUser;
 
     /*@GetMapping("/register")
     public ModelAndView register() {
@@ -73,8 +91,9 @@ public class MainController {
         return modelAndView;
     }
 
-    @RequestMapping("/showModuleTeacher/{id}")
-    public ModelAndView showModuleTeacher(@PathVariable(name = "id") int id) {
+    @RequestMapping("/showModuleTeacher/{idModule}/{idTeacher}")
+    public ModelAndView showModuleTeacher(@PathVariable(name = "idModule") int idModule,
+            @PathVariable(name = "idTeacher") int idTeacher) {
 
         if (!loggedIn) {
             return new ModelAndView("redirect:http://localhost:8082/main/login");
@@ -83,13 +102,42 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("module_teacher_view");
 
-        Module module = restTemplate.getForObject("http://Course-Service/mod/getModule/" + id, Module.class);
+        Module module = restTemplate.getForObject("http://Course-Service/mod/getModule/" + idModule, Module.class);
         modelAndView.addObject("module", module);
 
-        TeacherAccount teacher = restTemplate.getForObject("http://Teacher-Service/teacher/getTeacher/" + id,TeacherAccount.class);
+        TeacherAccount teacher = restTemplate.getForObject("http://Teacher-Service/teacher/getTeacher/" + idTeacher,TeacherAccount.class);
         modelAndView.addObject("teacher", teacher);
 
+
+        String filesData = restTemplate.getForObject("http://Course-Service/mod/get_files_by_module_id/"+module.getIdModule(), String.class);
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+
+        List<MyFile> files = new ArrayList<MyFile>();
+        try {
+            files = objectMapper.readValue(filesData, new TypeReference<List<MyFile>>() {
+            });
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        modelAndView.addObject("files", files);
+
+        //modelAndView.addObject("file","http://localhost:8088/store/files/158001540_729054664475750_717103923840496317_n.jpg");
         return modelAndView;
+    }
+
+    //@GetMapping("/file/{name}")
+    //public Resource serveFile(@PathVariable("name") String name){
+        //ResponseEntity<Resource> r = restTemplate.getForEntity("http://File-Storage-Service/store/files/"+name, Resource.class);
+        //return r.getBody();
+    //}
+    
+    @GetMapping("/file/{name}")
+    public ModelAndView downloadFile(@PathVariable("name") String name) {
+
+        return new ModelAndView("redirect:http://localhost:8082/store/files/"+name);
     }
 
     @GetMapping("/teacher_profile/{idTeacher}")
@@ -163,6 +211,7 @@ public class MainController {
         user = restTemplate.postForObject("http://Authentication-Service/auth/login", user,UserAccount.class);
         if(user!=null){
             loggedIn = true;
+            idUser = user.getIdUser();
         }else{
             return new ModelAndView("redirect:http://localhost:8082/main/login");
         }
@@ -180,6 +229,7 @@ public class MainController {
     public ModelAndView logout() {
         loggedIn = false;
         isAdminLoggedIn = false;
+        idUser = 0;
         return new ModelAndView("redirect:http://localhost:8082/main/login");
     }
     @GetMapping("/admin_home")
@@ -337,27 +387,54 @@ public class MainController {
         modelAndView.addObject("teacher", teacher);
         return modelAndView;
     }
-    @GetMapping("/new_file/{email}/{Id}")
-    public ModelAndView saveFileForm(@PathVariable(name = "email") String email, @PathVariable(name = "id") int id) {
-        
-        File file = new file();
-        file.setModuleID(new Long(id));
-        file.setTeacherEmail(email);
+    @GetMapping("/new_file/{email}/{idModule}")
+    public ModelAndView saveFileForm(@PathVariable(name = "email") String email, @PathVariable(name = "idModule") int idModule) {
+        if (!loggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
+        MyFile myFile = new MyFile();
+        myFile.setModuleID(new Long(idModule));
+        myFile.setTeacherEmail(email);
         //TeacherAccount teacher = restTemplate.getForObject("http://Teacher-Service/teacher/getTeacher/" + id, TeacherAccount.class);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("new_file");
-        modelAndView.addObject("File", file);
+        modelAndView.addObject("myFile", myFile);
+        modelAndView.addObject("idModule", idModule);
         return modelAndView;
     }
-    @PostMapping("/save_file")
-    public ModelAndView DeleteTeacher(@RequestParam("data") MultipartFile data,@ModelAttribute("file") File file) {
+    @PostMapping("/save_file/{idModule}")
+    public ModelAndView SaveFile(@RequestParam("data") MultipartFile data,@ModelAttribute("myFile") MyFile myFile,@PathVariable("idModule") long idModule ) throws IOException {
+        if (!loggedIn) {
+            return new ModelAndView("redirect:http://localhost:8082/main/login");
+        }
+        String url = "http://File-Storage-Service/store/storefile";
+        MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
+        bodyMap.add("file", new FileSystemResource(convert(data)));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyMap, headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 
-        String link = restTemplate.postForObject("http://File-Storage-Service/store/storefile/" + data, String.class);
-        file.setLink(link);
+        String link = response.getBody();
+        myFile.setLink(link);
+        myFile.setModuleID(idModule);
 
-        restTemplate.postForObject("http://Course-Service/file/save/" + file, String.class);
+        restTemplate.postForObject("http://Course-Service/mod/save_file", myFile, String.class);
 
-        return new ModelAndView("redirect:http://localhost:8082/main");
+        return new ModelAndView("redirect:http://localhost:8082/main/showModuleTeacher/" + idModule + "/" + idUser);
+    }
+    
+    public static File convert(MultipartFile file) {
+        File convFile = new File(file.getOriginalFilename());
+        try {
+            convFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(convFile);
+            fos.write(file.getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return convFile;
     }
 
 }

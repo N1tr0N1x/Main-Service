@@ -32,7 +32,7 @@
                 <tr th:each="module : ${modulesCours}">
                     <td th:text="${module.name}">Name</td>
                     <td>
-                        <a th:href="@{'/main/showModuleTeacher/' + ${module.idModule}}">SHOW</a>
+                        <a th:href="@{'/main/showModuleTeacher/' + ${module.idModule} + '/' + ${teacher.idTeacher}}">SHOW</a>
                     </td>
                 </tr>
             </tbody>
@@ -51,7 +51,7 @@
                 <tr th:each="module : ${modulesTd}">
                     <td th:text="${module.name}">Name</td>
                     <td>
-                        <a th:href="@{'/main/showModuleTeacher/' + ${module.idModule}}">SHOW</a>
+                        <a th:href="@{'/main/showModuleTeacher/' + ${module.idModule} + '/' + ${teacher.idTeacher}}">SHOW</a>
                     </td>
                 </tr>
             </tbody>
@@ -70,7 +70,7 @@
                 <tr th:each="module : ${modulesTp}">
                     <td th:text="${module.name}">Name</td>
                     <td>
-                        <a th:href="@{'/main/showModuleTeacher/' + ${module.idModule}}">SHOW</a>
+                        <a th:href="@{'/main/showModuleTeacher/' + ${module.idModule} + '/' + ${teacher.idTeacher}}">SHOW</a>
                     </td>
                 </tr>
             </tbody>
