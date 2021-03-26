@@ -20,49 +20,49 @@
             <th:block th:utext="${module.name}" />
         </h1>
 
-        <ul>
-            <li>
+        <ul class="list-group">
+            <li class="list-group-item">
                 <p>credit: </p>
                 <th:block th:utext="${module.credit}" />
             </li>
-            <li>
+            <li class="list-group-item">
                 <p>coefficient: </p>
                 <th:block th:utext="${module.coefficient}" />
             </li>
-            <li>
+            <li class="list-group-item">
                 <p>vh_cours: </p>
                 <th:block th:utext="${module.vhCours}" />
             </li>
-            <li>
+            <li class="list-group-item">
                 <p>vh_td: </p>
                 <th:block th:utext="${module.vhTd}" />
             </li>
-            <li>
+            <li class="list-group-item">
                 <p>email_ens_cours: </p>
                 <th:block th:utext="${module.emailEnsCours}" />
             </li>
-            <li>
+            <li class="list-group-item">
                 <p>email_ens_td: </p>
                 <th:block th:utext="${module.emailEnsTd}" />
             </li>
-            <li>
+            <li class="list-group-item">
                 <p>email_ens_tp: </p>
                 <th:block th:utext="${module.emailEnsTp}" />
             </li>
-            </li>
+         
 
         </ul>
 
         <h2>module courses :</h2>
         <div>
-            <table border="1" cellpadding="10">
-                <thead>
-                    <tr>
+            <table border="1" cellpadding="10" class= "table table-hover table-dark">
+                <thead class="thead-dark">
+                    <tr scope="col">
                         <th>File</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="file : ${files}">
+                    <tr scope="row" th:each="file : ${files}">
                         <td th:text="${file.title}">FILE</td>
                         <td>
                             <a th:href="@{'/main/file/' + ${file.link}}">DOWNLOAD</a>
